@@ -27,22 +27,35 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
 			transaction.begin();
-			// JPA 관련된 코드가 나온다.
+//			// JPA 관련된 코드가 나온다.
 //		    User user = new User();
 //			user.setName("민형");
 //			user.setEmail("dlalsgud12@naver.com");
 //			user.setPassword("1234");
-
+//
 //			// 영속성을 갖게 해달라 -> 이 데이터가 DBMS에 저장된다.
 //			entityManager.persist(user);
 
-			User user = entityManager.find(User.class, 1);
-			System.out.println(user);
+			User user = entityManager.find(User.class, 2);
+			User user2 = entityManager.find(User.class, 2);
+
+//			if(user == user2) // 같은 참조냐?
+//				System.out.println("같은 참조");
+//			else
+//				System.out.println("다른 참조");
+
+			user.setPassword("5678");
+
+			System.out.println(user2.getPassword());
+
+//			System.out.println(user);
+//			entityManager.remove(user);
+
 			transaction.commit();
 		}catch (Exception ex){
-			transaction.rollback();
+			transaction.rollback(); // 문제가 생기면 롤백
 		}finally {
-			entityManager.close();
+			entityManager.close ();
 		}
 	}
 }
