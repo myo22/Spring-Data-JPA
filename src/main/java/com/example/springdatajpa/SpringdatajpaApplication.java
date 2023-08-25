@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory; // javax.persistence : 이렇게 시작되면 전부 JPA API이다
 import javax.persistence.EntityTransaction;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -33,6 +34,127 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
+
+//		User user =  userRepository.findByNameAndEmail("민형", "dlalsgud12@naver.com").orElseThrow();
+//		System.out.println(user);
+
+//		Optional<User> user =  userRepository.findByNameAndEmail("민형", "dlalsgud12@naver.com");
+//		System.out.println(user.get());
+
+//		List<User> users = userRepository.findByNameOrEmail("둘리3","dlalsgud12@naver.com");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByUserIdBetween(1,3);
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByUserIdLessThan(6);
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+//
+//		List<User> users = userRepository.findByUserIdLessThanEqual(6);
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByUserIdGreaterThan(6);
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByUserIdGreaterThanEqual(6);
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByRegdateAfter(LocalDateTime.now().minusDays(2L));
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByRegdateBefore(LocalDateTime.now().minusDays(2L));
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameIsNull();
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameIsNotNull();
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameLike("민%");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameStartingWith("민");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameEndingWith("형");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameContaining("리");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByOrderByNameAsc();
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByOrderByNameDesc();
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByRegdateAfterOrderByNameDesc(LocalDateTime.now().minusDays(2L));
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameNot("민형");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByNameNot("민형");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findByUserIdIn(List.of(2,6));
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+		List<User> users = userRepository.findByUserIdNotIn(List.of(2,6));
+		for(User user : users){
+			System.out.println(user);
+		}
+
+
+
+
+
+
+
+
+
+
 
 //		System.out.println(userRepository.getClass().getName());
 ////		Optional<User> Id = userRepository.findById(2);
@@ -61,9 +183,9 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 //			System.out.println("user != saveUser");
 //		}
 
-		// 동명이인 있으면 에러가 난다. List로 받질 않아서 -> 그땐 List<User>  user = userRepository.findByName("둘리3");
-		User user = userRepository.findByName("민형").orElseThrow();
-		System.out.println(user);
+//		// 동명이인 있으면 에러가 난다. List로 받질 않아서 -> 그땐 List<User>  user = userRepository.findByName("둘리3");
+//		User user = userRepository.findByName("민형").orElseThrow();
+//		System.out.println(user);
 
 //		// delete
 //		userRepository.deleteById(3);
@@ -85,6 +207,7 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 //			user.setPassword(암호)
 // 		트랜잭션 종료 // update query 실행.
 //		entityTransaction.commit();
+
 
 
 
