@@ -3,6 +3,8 @@ package com.example.springdatajpa.repository;
 import com.example.springdatajpa.domain.User;
 
 // org.springframework.data.jpa : Spring Data JPA와 관련된 패키지.
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Timestamp;
@@ -81,10 +83,40 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // where user_id not in( ..... )
     List<User> findByUserIdNotIn(Collection<Integer> userIds);
 
-    // where flag = true
-    List<User> findByFlagTrue(); // List<User> findByFlagTrue(); = List<User> findByFlag(boolean flag);
+//    // where flag = true
+//    List<User> findByFlagTrue(); // List<User> findByFlagTrue(); = List<User> findByFlag(boolean flag);
+//
+//    // where flag = false
+//    List<User> findByFlagFalse();
 
-    // where flag = false
-    List<User> findByFlagFalse();
+    // select count(*) from user2
+    Long countBy();
+
+    // select count(*) from user2 where name like?
+    Long countByNameLike(String name);
+
+    // where email = ?
+    boolean existsByEmail(String email);
+
+    // select * from user2 where name = ?
+    // select한 건수만큼 delete from user2 where user_id = ?
+    int deleteByName(String name);
+
+    // select distinct * from user2 where name = ?
+    List<User> findDistinctByName(String name);
+
+    // 결과중 2건만 - select * from user2 limit 2
+    List<User> findFirst2By();
+    List<User> findTop2By();
+
+    // 페이징 처리에 대한 정보를 받아들인다.
+    Page<User> findBy(Pageable pageable);
+    Page<User> findByName(String name, Pageable pageable);
 
 }
+
+// Page<Board> findBy(Pageable pageable);
+// Page<Board> findByName(String name, Pageable pageable);
+// Page<Board> findByTitleContaining(String title, Pageable pageable);
+// Page<Board> findByContentContaining(String content, Pageable pageable);
+// Page<Board> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);

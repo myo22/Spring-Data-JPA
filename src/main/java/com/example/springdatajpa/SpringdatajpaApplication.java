@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -140,13 +143,50 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 //		for(User user : users){
 //			System.out.println(user);
 //		}
+//
+//		List<User> users = userRepository.findByUserIdNotIn(List.of(2,6));
+//		for(User user : users){
+//			System.out.println(user);
+//		}
 
-		List<User> users = userRepository.findByUserIdNotIn(List.of(2,6));
-		for(User user : users){
+//		Long count = userRepository.countBy();
+//		System.out.println(count);
+
+//		Long count = userRepository.countByNameLike("둘리3");
+//		System.out.println(count);
+
+//		boolean find = userRepository.existsByEmail("dlalsgud12@naver.com");
+//		System.out.println(find);
+
+//		int count = userRepository.deleteByName("민형");
+//		System.out.println(count);
+
+//		List<User> users = userRepository.findDistinctByName("둘리3");
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findFirst2By();
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		List<User> users = userRepository.findTop2By();
+//		for(User user : users){
+//			System.out.println(user);
+//		}
+
+//		Page<User> users = userRepository.findBy(PageRequest.of(1, 2, Sort.by(Sort.Direction.DESC, "regdate")));
+//		// users는 페이지 객체이기 때문에 getContent를 통해 0번째 페이지에 리스트를 가져오게 된다.
+//		for(User user : users.getContent()){
+//			System.out.println(user);
+//		}
+
+		Page<User> users = userRepository.findByName("김치만두", PageRequest.of(1, 2, Sort.by(Sort.Direction.DESC, "regdate")));
+
+		for(User user : users.getContent()){
 			System.out.println(user);
 		}
-
-
 
 
 
@@ -165,7 +205,7 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 
 //      // insert
 //		User user = new User();
-//		user.setName("둘리3");
+//		user.setName("김치만두");
 //		user.setEmail("enffl@example.com");
 //		user.setPassword("1234");
 //		user.setRegdate(LocalDateTime.now());
