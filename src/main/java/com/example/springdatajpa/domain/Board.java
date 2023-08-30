@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+// @Entity(name = "Board") 이렇게 적어줘야하는데 안적으면 클래스 이름이 엔티티 이름이 된다.
 @Entity
 @Table(name = "board")
 @Getter

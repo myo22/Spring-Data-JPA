@@ -62,15 +62,51 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 //			System.out.println(role);
 //		}
 
-		// 게시물이 100건일 경우.
-		// 게시물 100건 가지고 오는 Query 1개
-		// 100 * 2번의 사용자 + 권한 정보 가지고 오는 Query 실행.
-		// 1 + N 문제. 총 201개 Query가 실행되버림.
-		List<Board> boards = boardRepository.findAll(); // select * from board
+//		// 게시물이 100건일 경우.
+//		// 게시물 100건 가지고 오는 Query 1개
+//		// 100 * 2번의 사용자 + 권한 정보 가지고 오는 Query 실행.
+//		// 1 + N 문제. 총 201개 Query가 실행되버림.
+//		List<Board> boards = boardRepository.findAll(); // select * from board
+//		for(Board board : boards){
+//			System.out.println(board); // board.toString() -> board의 user정보를 가지고 오기 위해서 select * from user을 실행. 만약 roles도 toString 처리 되어있다면, select * from role_role role 조인한것도 실행
+//			System.out.println(board.getUser());
+//		}
+
+//		Board board = boardRepository.findById(16).get();
+//		System.out.println(board);
+//		System.out.println(board.getUser()); // lazy로 새로운 SQL이 실행된다.
+
+
+		List<Board> boards = boardRepository.getBoards(); // findAll과 똑같다.
 		for(Board board : boards){
-			System.out.println(board); // board.toString() -> board의 user정보를 가지고 오기 위해서 select * from user을 실행. 만약 roles도 toString 처리 되어있다면, select * from role_role role 조인한것도 실행
+			System.out.println(board);
 			System.out.println(board.getUser());
 		}
+
+		Long boardCount = boardRepository.getBoardCount();
+		System.out.println(boardCount);
+
+
+//		Role role = roleRepository.findById(2).get();
+//		System.out.println(role);
+//
+//		User user = new User();
+//		user.setName("관리자");
+//		user.setPassword("1234");
+//		user.setEmail("dlalsgud12@naver.com");
+//		user.setRegdate(LocalDateTime.now());
+//		user.setRoles(Set.of(role));
+//
+//		// user 테이블에 관리자 정보가 insert
+//		userRepository.save(user);
+//
+//		User user = userRepository.findById(10).get();
+//		Board board = new Board();
+//		board.setUser(user);
+//		board.setRegdate(LocalDateTime.now());
+//		board.setTitle("관리자님의 글");
+//		board.setContent("내용입니다.");
+//		boardRepository.save(board);
 
 
 
