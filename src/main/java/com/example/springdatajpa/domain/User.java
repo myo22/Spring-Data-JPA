@@ -8,13 +8,15 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity // Database Table과 맵핑하는 객체.
-@Table(name = "user2") // Database 테이블 이름이 user2와 User라는 객체가 맵핑.
+@Table(name = "user") // Database 테이블 이름이 user2와 User라는 객체가 맵핑.
 @NoArgsConstructor
+//@ToString -> 밑에 roles까지 ToString으로 만들기위해서 select문이 자동으로 실행되기 때문에 재귀호출 문제가 발생한다.
 @Getter
 @Setter
-@ToString
 public class User {
 
     @Id // 이 필드가 Table의 PK.
@@ -33,4 +35,24 @@ public class User {
 
     @CreationTimestamp // 현재시간이 저장될 때 자동으로 생성.
     private LocalDateTime regdate;
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    ) // 이렇게 적어줘야 User와 Role을 관계로 맺어주는 것이다.
+    Set<Role> roles = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", regdate=" + regdate +
+                '}';
+    }
 }
+
+// User ------> Role N:N관계이지만 Role에서는 User를 가지고오지 못하는 단반향 관계이다.

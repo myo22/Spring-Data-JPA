@@ -1,6 +1,10 @@
 package com.example.springdatajpa;
 
+import com.example.springdatajpa.domain.Board;
+import com.example.springdatajpa.domain.Role;
 import com.example.springdatajpa.domain.User;
+import com.example.springdatajpa.repository.BoardRepository;
+import com.example.springdatajpa.repository.RoleRepository;
 import com.example.springdatajpa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +21,7 @@ import javax.persistence.EntityTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @SpringBootApplication
 public class SpringdatajpaApplication implements CommandLineRunner {
@@ -25,11 +30,17 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 		SpringApplication.run(SpringdatajpaApplication.class, args);
 	}
 
-	@Autowired
-	EntityManagerFactory entityManagerFactory;
+//	@Autowired
+//	EntityManagerFactory entityManagerFactory;
 
 	@Autowired
 	UserRepository userRepository; // UserRepository를 구현하고 있는 Bean을 자동으로 inject(주입)을 해준다.
+
+	@Autowired
+	RoleRepository roleRepository;
+
+	@Autowired
+	BoardRepository boardRepository;
 
 	// org.springframework.transaction.annotation.Transactional;
 	// 메소드가 시작할때 트랜잭션이 실행되고, 메소드가 종료할때 트랜잭션이 commit
@@ -37,6 +48,34 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
+//		List<User> users = userRepository.findAll(); // select * from user; 1+N 문제 - 쿼리가 너무 많이 실행됨  ---> select * from user, user_role, role where user.user_id = user_role.user_id and user_role.role_id = role.role_id; 이렇게 바꿀수 있음.
+//		for(User user : users){
+//			System.out.println(user);
+//			for(Role role : user.getRoles()) { // select from user_role, role where user_id = ?
+//				System.out.println(role);
+//			}
+//			System.out.println("---------------------------");
+//		}
+
+//		List<Role> roles = roleRepository.findAll();
+//		for(Role role : roles){
+//			System.out.println(role);
+//		}
+
+		// 게시물이 100건일 경우.
+		// 게시물 100건 가지고 오는 Query 1개
+		// 100 * 2번의 사용자 + 권한 정보 가지고 오는 Query 실행.
+		// 1 + N 문제. 총 201개 Query가 실행되버림.
+		List<Board> boards = boardRepository.findAll(); // select * from board
+		for(Board board : boards){
+			System.out.println(board); // board.toString() -> board의 user정보를 가지고 오기 위해서 select * from user을 실행. 만약 roles도 toString 처리 되어있다면, select * from role_role role 조인한것도 실행
+			System.out.println(board.getUser());
+		}
+
+
+
+
+
 
 //		User user =  userRepository.findByNameAndEmail("민형", "dlalsgud12@naver.com").orElseThrow();
 //		System.out.println(user);
@@ -182,11 +221,11 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 //			System.out.println(user);
 //		}
 
-		Page<User> users = userRepository.findByName("김치만두", PageRequest.of(1, 2, Sort.by(Sort.Direction.DESC, "regdate")));
-
-		for(User user : users.getContent()){
-			System.out.println(user);
-		}
+//		Page<User> users = userRepository.findByName("김치만두", PageRequest.of(1, 2, Sort.by(Sort.Direction.DESC, "regdate")));
+//
+//		for(User user : users.getContent()){
+//			System.out.println(user);
+//		}
 
 
 
