@@ -1,5 +1,6 @@
 package com.example.springdatajpa;
 
+import com.example.springdatajpa.dao.BoardIf;
 import com.example.springdatajpa.domain.Board;
 import com.example.springdatajpa.domain.Role;
 import com.example.springdatajpa.domain.User;
@@ -86,6 +87,13 @@ public class SpringdatajpaApplication implements CommandLineRunner {
 		Long boardCount = boardRepository.getBoardCount();
 		System.out.println(boardCount);
 
+		List<BoardIf> list = boardRepository.getBoardsWithNativeQuery();
+		for(BoardIf boardIf : list){
+			System.out.println(boardIf.getClass().getName()); // BoardIf를 구현하는 객체가 자동으로 select문으로 결과를 담아준다.
+			System.out.println(boardIf.getName()); // 글작성자
+			System.out.println(boardIf.getTitle());
+			System.out.println(boardIf); // 구현하고있는 proxy는 toString 메소드를 구현하고 있지 않기때문에 의미없는 값이 출력.
+		}
 
 //		Role role = roleRepository.findById(2).get();
 //		System.out.println(role);

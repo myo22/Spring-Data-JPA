@@ -1,8 +1,10 @@
 package com.example.springdatajpa.repository;
 
+import com.example.springdatajpa.dao.BoardIf;
 import com.example.springdatajpa.domain.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -27,7 +29,25 @@ public interface BoardRepository extends JpaRepository<Board, Integer> { // 게�
 
 
     // 관리자가 쓴 글만 목록을 구하는 JPQL을 작성하시오. 이게 가능할가요?
-    @Query(value = "select b from Board b, User u, Role r where b.user.user_id = u.user_id and r.name = "ROLE_ADMIN"")
+    // @Query(value = "select b from Board b, User u, Role r where b.user.userId = u.userId and r.roleId = 2") 이렇게 처음에 쓰고 틀렸다가 아래로 고쳤다.
+    @Query(value = "select b from Board b join fetch b.user u join u.roles r where r.roleId = 2")
     List<Board> getBoard();
+
+    // 테이블이 4가지면 조인 조건은 테이블수 - 1 이다.
+    // select * from board b, user u, user_role ur, role r where b.user_id = u.user_id and u.user_id = ur.user_id and ur.role_id = r.role_id and r.name = "ROLE_ADMIN";
+//    @Query(value = "select b from Board b join fetch b.user u join u.roles r where r.name = :roleName") // jpql에서는 물음표를 사용하면 안된다.
+//    List<Board> getBoards(@Param("roleName") String roleName);
+    // Board b join b.user 이 부분은 SQL로 따지면 b.user_id = u.user_id 와 같다.
+
+    // fetch를 빼고도 Alias를 이용해서도 동일하게 가능하다.
+    @Query(value = "select b, u from Board b join b.user u join u.roles r where r.name = :roleName")
+    List<Board> getBoards(@Param("roleName") String roleName);
+
+    // JPQL로 바꾸기 굉장히 어려운 쿼리는 이렇게 Native SQL로 사용할 수 있다. -> 엔티티 클래스를 사용하지 않고 Getter 메소드를 가지고있는 인터페이스만 정의해준다.(규칙 : 칼럼명과 동일한 Getter 메소드)
+    // Spring data jpa가 이 인터페이스를 구현하고있는 객체를 자동으로 생성해서 리턴해준다.
+    @Query(value = "select b.board_id, b.title, b.content, b.user_id, u.name, b.regdate, b.view_cnt from board b, user u, user_role ur, role r where b.user_id = u.user_id and u.user_id = ur.user_id and ur.role_id = r.role_id",
+            nativeQuery = true
+    )
+    List<BoardIf> getBoardsWithNativeQuery();
 
 }
